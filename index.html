@@ -184,7 +184,8 @@
 
     .routine,
     .meal,
-    .music {
+    .music,
+    .habit-ideas {
       background: #fef9f3;
       border-radius: 16px;
       padding: 16px;
@@ -194,7 +195,9 @@
 
     .routine ul,
     .meal ul,
-    .music ul {
+    .music ul,
+    .meal details ul,
+    .habit-ideas ul {
       margin-top: 10px;
       padding-left: 18px;
       color: var(--muted);
@@ -202,8 +205,64 @@
 
     .routine li,
     .meal li,
-    .music li {
+    .music li,
+    .meal details li,
+    .habit-ideas li {
       margin-bottom: 6px;
+    }
+
+    .meal details {
+      border: 1px solid #e9ddcf;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+
+    .meal summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--ink);
+      list-style: none;
+    }
+
+    .meal summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .meal summary::after {
+      content: "+";
+      float: right;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .meal details[open] summary::after {
+      content: "–";
+    }
+
+    .video-item {
+      margin-bottom: 14px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid #e9ddcf;
+      padding: 10px;
+    }
+
+    .video-item h4 {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 10px;
+      display: block;
+      background: #000;
     }
 
     .meta {
@@ -276,37 +335,127 @@
           </ul>
         </div>
 
-        <h3>Healthy Low-Cost Meals (Daily)</h3>
+        <h3>Healthy Low-Cost Meals (Click Day)</h3>
         <div class="meal">
           <div class="meta">
             <span>Budget-friendly</span>
-            <span>15–25 minutes</span>
+            <span>Full day menu</span>
           </div>
-          <ul>
-            <li><strong>Mon:</strong> Rice + beans + sautéed frozen veg.</li>
-            <li><strong>Tue:</strong> Oats with banana, peanut butter, and cinnamon.</li>
-            <li><strong>Wed:</strong> Egg + veggie scramble with toast.</li>
-            <li><strong>Thu:</strong> Lentil soup with carrots and onions.</li>
-            <li><strong>Fri:</strong> Tuna pasta with olive oil and lemon.</li>
-            <li><strong>Sat:</strong> Chickpea salad wrap with yogurt sauce.</li>
-            <li><strong>Sun:</strong> Baked potato topped with beans and salsa.</li>
-          </ul>
+          <details>
+            <summary>Mon</summary>
+            <ul>
+              <li>Breakfast: Oats with banana + peanut butter.</li>
+              <li>Lunch: Rice + beans + sautéed frozen veg.</li>
+              <li>Snack: Apple + yogurt.</li>
+              <li>Dinner: Veggie omelet with toast.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Tue</summary>
+            <ul>
+              <li>Breakfast: Overnight oats with cinnamon.</li>
+              <li>Lunch: Lentil soup with carrots and onions.</li>
+              <li>Snack: Carrot sticks + hummus.</li>
+              <li>Dinner: Tuna pasta with olive oil and lemon.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Wed</summary>
+            <ul>
+              <li>Breakfast: Scrambled eggs + spinach.</li>
+              <li>Lunch: Chickpea salad wrap + yogurt sauce.</li>
+              <li>Snack: Banana + peanuts.</li>
+              <li>Dinner: Baked potato topped with beans and salsa.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Thu</summary>
+            <ul>
+              <li>Breakfast: Greek yogurt + oats + fruit.</li>
+              <li>Lunch: Brown rice bowl with mixed veg.</li>
+              <li>Snack: Cottage cheese + cucumber.</li>
+              <li>Dinner: Tomato pasta with garlic + herbs.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Fri</summary>
+            <ul>
+              <li>Breakfast: Whole-grain toast + peanut butter.</li>
+              <li>Lunch: Bean chili with corn.</li>
+              <li>Snack: Popcorn + fruit.</li>
+              <li>Dinner: Veggie stir-fry + rice.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Sat</summary>
+            <ul>
+              <li>Breakfast: Oat pancakes + fruit.</li>
+              <li>Lunch: Tuna salad sandwich.</li>
+              <li>Snack: Yogurt + nuts.</li>
+              <li>Dinner: Lentil curry + rice.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Sun</summary>
+            <ul>
+              <li>Breakfast: Smoothie (banana + oats + milk).</li>
+              <li>Lunch: Egg + veggie scramble with toast.</li>
+              <li>Snack: Trail mix.</li>
+              <li>Dinner: Beans + roasted potatoes.</li>
+            </ul>
+          </details>
         </div>
 
-        <h3>Daily Motivational Song</h3>
+        <h3>Daily Motivational Videos</h3>
         <div class="music">
           <div class="meta">
             <span>Fresh energy</span>
             <span>One per day</span>
           </div>
+          <div class="video-item">
+            <h4>Mon — Kanye West: Stronger</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/PsO6ZnUZI0g" title="Kanye West - Stronger" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Tue — Macklemore &amp; Ryan Lewis: Can't Hold Us</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/2zNSgSzhBfM" title="Macklemore &amp; Ryan Lewis - Can't Hold Us" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Wed — Survivor: Eye of the Tiger</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/btPJPFnesV4" title="Survivor - Eye of the Tiger" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Thu — Queen: Don't Stop Me Now</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/HgzGwKwLmgM" title="Queen - Don't Stop Me Now" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Fri — David Guetta ft. Sia: Titanium</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/JRfuAukYTKg" title="David Guetta - Titanium ft. Sia" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Sat — Pharrell Williams: Happy</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/ZbZSe6N_BXs" title="Pharrell Williams - Happy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-item">
+            <h4>Sun — Rachel Platten: Fight Song</h4>
+            <iframe class="video-frame" src="https://www.youtube.com/embed/xo1VInw-SKc" title="Rachel Platten - Fight Song" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <h3>Daily Healthy Habit Idea</h3>
+        <div class="habit-ideas">
+          <div class="meta">
+            <span>Small wins</span>
+            <span>One per day</span>
+          </div>
           <ul>
-            <li><strong>Mon:</strong> “Stronger” — Kanye West.</li>
-            <li><strong>Tue:</strong> “Can’t Hold Us” — Macklemore &amp; Ryan Lewis.</li>
-            <li><strong>Wed:</strong> “Eye of the Tiger” — Survivor.</li>
-            <li><strong>Thu:</strong> “Don’t Stop Me Now” — Queen.</li>
-            <li><strong>Fri:</strong> “Lose Yourself” — Eminem.</li>
-            <li><strong>Sat:</strong> “Titanium” — David Guetta ft. Sia.</li>
-            <li><strong>Sun:</strong> “Good as Hell” — Lizzo.</li>
+            <li><strong>Mon:</strong> Drink an extra glass of water before lunch.</li>
+            <li><strong>Tue:</strong> Take a 10-minute walk after a meal.</li>
+            <li><strong>Wed:</strong> Add one extra serving of vegetables.</li>
+            <li><strong>Thu:</strong> Do 5 minutes of stretching or mobility.</li>
+            <li><strong>Fri:</strong> Go to bed 30 minutes earlier.</li>
+            <li><strong>Sat:</strong> Swap one sugary drink for water or tea.</li>
+            <li><strong>Sun:</strong> Plan your meals or habits for the week.</li>
           </ul>
         </div>
       </aside>
