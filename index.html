@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weekly Habit Tracker</title>
+  <style>
+    :root {
+      --bg-1: #fdf7f1;
+      --bg-2: #f6efe7;
+      --ink: #1e1b16;
+      --muted: #6b6054;
+      --accent: #2e6bd3;
+      --accent-2: #1f4f9f;
+      --card: #ffffff;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+      --radius: 18px;
+      --transition: 160ms ease;
+      font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #dbe9ff 0%, var(--bg-1) 45%, var(--bg-2) 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 32px 18px 50px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: min(1100px, 100%);
+      display: grid;
+      gap: 28px;
+    }
+
+    header {
+      display: grid;
+      gap: 14px;
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .layout {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .habit-form {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .habit-form input {
+      flex: 1;
+      border: 1px solid #e7dbce;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 1rem;
+    }
+
+    .habit-form button {
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .habit-form button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(46, 107, 211, 0.3);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      text-align: left;
+      padding: 10px 6px;
+      font-size: 0.95rem;
+    }
+
+    .table th {
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .table tbody tr + tr {
+      border-top: 1px dashed #f0e2d4;
+    }
+
+    .habit-name {
+      font-weight: 600;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .day-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f1e8;
+      border-radius: 999px;
+      padding: 6px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .tick {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      border: 2px solid #e5d7c7;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: #fff;
+      font-weight: 600;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .tick.done {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      color: #fff;
+      transform: scale(1.03);
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: #e8f0ff;
+      color: #184a9c;
+      font-weight: 600;
+      display: none;
+    }
+
+    .sidebar h3 {
+      margin-bottom: 12px;
+    }
+
+    .routine,
+    .meal,
+    .music {
+      background: #fef9f3;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #f1e2d4;
+      margin-bottom: 16px;
+    }
+
+    .routine ul,
+    .meal ul,
+    .music ul {
+      margin-top: 10px;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .routine li,
+    .meal li,
+    .music li {
+      margin-bottom: 6px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .habit-form {
+        flex-direction: column;
+      }
+
+      .habit-form button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Weekly Habit Tracker</h1>
+      <p>Build healthy habits and stay consistent. Add a habit, check it off each day, and celebrate every win.</p>
+    </header>
+
+    <section class="layout">
+      <div class="card">
+        <form class="habit-form" id="habitForm">
+          <input id="habitInput" type="text" placeholder="Add a healthy habit (e.g., Drink 2L water)" maxlength="40" required />
+          <button type="submit">Add habit</button>
+        </form>
+
+        <div class="days" id="dayLabels"></div>
+
+        <table class="table" aria-label="Weekly habit tracker">
+          <thead>
+            <tr>
+              <th>Habit</th>
+              <th colspan="7">Week</th>
+            </tr>
+          </thead>
+          <tbody id="habitTable"></tbody>
+        </table>
+
+        <div class="message" id="successMessage">Great job! You hit today’s goal 🎉</div>
+      </div>
+
+      <aside class="card sidebar">
+        <h3>30-Minute Full-Body Routine (Daily)</h3>
+        <div class="routine">
+          <div class="meta">
+            <span>Bodyweight + light equipment</span>
+            <span>30 minutes</span>
+          </div>
+          <ul>
+            <li><strong>Mon:</strong> Squat + push + plank circuit (3 rounds).</li>
+            <li><strong>Tue:</strong> Lunge + row + dead bug circuit (3 rounds).</li>
+            <li><strong>Wed:</strong> HIIT mix: jumping jacks, mountain climbers, glute bridges.</li>
+            <li><strong>Thu:</strong> Core + mobility: side planks, bird-dogs, hip openers.</li>
+            <li><strong>Fri:</strong> Lower body strength: split squats, hip hinges, calf raises.</li>
+            <li><strong>Sat:</strong> Upper body strength: push-ups, chair dips, band pulls.</li>
+            <li><strong>Sun:</strong> Recovery flow: yoga stretches + 20-min walk.</li>
+          </ul>
+        </div>
+
+        <h3>Healthy Low-Cost Meals (Daily)</h3>
+        <div class="meal">
+          <div class="meta">
+            <span>Budget-friendly</span>
+            <span>15–25 minutes</span>
+          </div>
+          <ul>
+            <li><strong>Mon:</strong> Rice + beans + sautéed frozen veg.</li>
+            <li><strong>Tue:</strong> Oats with banana, peanut butter, and cinnamon.</li>
+            <li><strong>Wed:</strong> Egg + veggie scramble with toast.</li>
+            <li><strong>Thu:</strong> Lentil soup with carrots and onions.</li>
+            <li><strong>Fri:</strong> Tuna pasta with olive oil and lemon.</li>
+            <li><strong>Sat:</strong> Chickpea salad wrap with yogurt sauce.</li>
+            <li><strong>Sun:</strong> Baked potato topped with beans and salsa.</li>
+          </ul>
+        </div>
+
+        <h3>Daily Motivational Song</h3>
+        <div class="music">
+          <div class="meta">
+            <span>Fresh energy</span>
+            <span>One per day</span>
+          </div>
+          <ul>
+            <li><strong>Mon:</strong> “Stronger” — Kanye West.</li>
+            <li><strong>Tue:</strong> “Can’t Hold Us” — Macklemore &amp; Ryan Lewis.</li>
+            <li><strong>Wed:</strong> “Eye of the Tiger” — Survivor.</li>
+            <li><strong>Thu:</strong> “Don’t Stop Me Now” — Queen.</li>
+            <li><strong>Fri:</strong> “Lose Yourself” — Eminem.</li>
+            <li><strong>Sat:</strong> “Titanium” — David Guetta ft. Sia.</li>
+            <li><strong>Sun:</strong> “Good as Hell” — Lizzo.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "weeklyHabitsV1";
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    const habitForm = document.getElementById("habitForm");
+    const habitInput = document.getElementById("habitInput");
+    const habitTable = document.getElementById("habitTable");
+    const dayLabels = document.getElementById("dayLabels");
+    const successMessage = document.getElementById("successMessage");
+
+    const normalizeHabits = (data) => {
+      if (!Array.isArray(data)) return [];
+      return data
+        .map((habit) => {
+          const name = String(habit.name || "").trim().slice(0, 40);
+          if (!name) return null;
+          const daysData = Array.isArray(habit.days) ? habit.days.slice(0, 7).map(Boolean) : [];
+          while (daysData.length < 7) {
+            daysData.push(false);
+          }
+          return { name, days: daysData };
+        })
+        .filter(Boolean);
+    };
+
+    const loadHabits = () => {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return normalizeHabits(data);
+      } catch (error) {
+        return [];
+      }
+    };
+
+    const saveHabits = () => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
+    };
+
+    const habits = loadHabits();
+
+    const renderDayLabels = () => {
+      dayLabels.innerHTML = days.map((day) => `<span class="day-pill">${day}</span>`).join("");
+    };
+
+    const showMessage = () => {
+      successMessage.style.display = "block";
+      clearTimeout(showMessage.timer);
+      showMessage.timer = setTimeout(() => {
+        successMessage.style.display = "none";
+      }, 2200);
+    };
+
+    const toggleDay = (habitIndex, dayIndex) => {
+      const habit = habits[habitIndex];
+      habit.days[dayIndex] = !habit.days[dayIndex];
+      saveHabits();
+      renderHabits();
+      if (habit.days[dayIndex]) {
+        showMessage();
+      }
+    };
+
+    const renderHabits = () => {
+      habitTable.innerHTML = habits
+        .map((habit, habitIndex) => {
+          const ticks = habit.days
+            .map(
+              (done, dayIndex) =>
+                `<div class="tick ${done ? "done" : ""}" data-habit="${habitIndex}" data-day="${dayIndex}">${
+                  done ? "✓" : ""
+                }</div>`
+            )
+            .join("");
+          return `
+            <tr>
+              <td class="habit-name">${habit.name}</td>
+              <td colspan="7">
+                <div class="days">${ticks}</div>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    };
+
+    habitForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = habitInput.value.trim();
+      if (!name) return;
+      habits.push({ name, days: Array(7).fill(false) });
+      habitInput.value = "";
+      saveHabits();
+      renderHabits();
+    });
+
+    habitTable.addEventListener("click", (event) => {
+      const tick = event.target.closest(".tick");
+      if (!tick) return;
+      const habitIndex = Number(tick.dataset.habit);
+      const dayIndex = Number(tick.dataset.day);
+      toggleDay(habitIndex, dayIndex);
+    });
+
+    renderDayLabels();
+    renderHabits();
+  </script>
+</body>
+</html>
